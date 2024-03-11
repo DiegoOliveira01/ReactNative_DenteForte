@@ -5,6 +5,9 @@ Este projeto visa desenvolver um aplicativo móvel utilizando a tecnologia React
 
 # Funcionalidades Principais
 .Agendamento de consultas: Permitindo que pacientes marquem consultas de forma fácil e conveniente.
+
 .Gerenciamento de pacientes: Registro completo dos pacientes, histórico de consultas e tratamentos.
+
 .Gestão de profissionais: Cadastro de dentistas e funcionários da clínica, atribuição de horários de trabalho.
+
 .Controle de estoque: Monitoramento dos materiais odontológicos disponíveis na clínica.
