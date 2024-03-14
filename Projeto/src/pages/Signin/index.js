@@ -12,8 +12,7 @@ export default function Signin(){
     const navigation = useNavigation();
 
     const handleLogin = () => {
-        // Aqui você pode adicionar a lógica de autenticação
-        if(email === 'examplo@gmail.com' && password === '123'){
+        if(email === 'Diego' && password === '123'){
             navigation.navigate('Menu');
         } else {
             alert('Email ou senha incorretos!');
@@ -28,13 +27,20 @@ export default function Signin(){
 
             <Animatable.View animation="fadeInUp" style={styles.containerForm}>
             <Text style={styles.title}>Email:</Text>
-            <TextInput placeholder="Digite um Email..." style={styles.input} onChangeText={text => setEmail(text)}
-                    value={email}></TextInput>
+            <TextInput 
+            placeholder="Digite um Email..." 
+            style={styles.input}   
+            onChangeText={text => setEmail(text)}
+            value={email}> 
+            </TextInput>
             <Text style={styles.title}>Senha:</Text>
-            <TextInput placeholder="Digite sua senha..." style={styles.input} onChangeText={text => setPassword(text)}
-                    value={password}
-                    secureTextEntry></TextInput>
-
+            <TextInput 
+            placeholder="Digite sua senha..." 
+            style={styles.input} 
+            onChangeText={text => setPassword(text)}
+            value={password}
+            secureTextEntry>
+            </TextInput>
             <TouchableOpacity style={styles.button} onPress={handleLogin}>
                 <Text styles={styles.buttonText}>Acessar</Text>
             </TouchableOpacity>
