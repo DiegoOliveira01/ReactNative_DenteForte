@@ -13,13 +13,27 @@ export default function Menu(){
             </Animatable.View>
 
             <Animatable.View animation="fadeInUp" style={styles.containerForm}>
+            <Text style={styles.buttonTextAbove}>Cadastro De Cliente</Text>
             <TouchableOpacity style={styles.button}>
                 <Text styles={styles.buttonText}>Acessar</Text>
             </TouchableOpacity>
+            <Text style={styles.buttonTextAbove}>Gerenciamento De Cliente</Text>
+            <TouchableOpacity style={styles.button}>
+                <Text styles={styles.buttonText}>Acessar</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.buttonTextAbove}>Cadastro De Funcionários</Text>
+            <TouchableOpacity style={styles.button}>
+                <Text styles={styles.buttonText}>Acessar</Text>
+            </TouchableOpacity>
+            <Text style={styles.buttonTextAbove}>Gerenciamento De Funcionários</Text>
             <TouchableOpacity style={styles.button}>
                 <Text styles={styles.buttonText}>Acessar</Text>
             </TouchableOpacity>
             </Animatable.View>
+            
+            
+            
         </View>
     );
 }
@@ -47,12 +61,19 @@ const styles = StyleSheet.create({
         paddingStart: '5%',
         paddingEnd: '5%',
     },
+    buttonTextAbove:{
+        textAlign: "center",
+        fontSize: 16,
+        fontWeight: 'bold',
+        color:'#000',
+        marginTop: 20,
+    },
     button:{
         backgroundColor: '#38a69d',
         width: '100%',
         borderRadius: 4,
         paddingVertical: 8,
-        marginTop: 40,
+        marginTop: 15,
         justifyContent: 'center',
         alignItems: 'center',
     },
