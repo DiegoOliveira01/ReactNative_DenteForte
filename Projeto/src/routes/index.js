@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Welcome from '../pages/Welcome';
 import Signin from  '../pages/Signin';
 import Menu from  '../pages/Menu';
+import Cclient from '../pages/Cclient'
 
 const Stack = createNativeStackNavigator();
 
@@ -10,12 +11,11 @@ export default function Routes(){
     return(
         <Stack.Navigator>
         
-        <Stack.Screen 
-            name="Menu"
-            component={Menu}
-            options={{ headerShown: false}}
-        />
+        
+        {/* Menu em teste */}
+        
 
+        
         <Stack.Screen 
             name="Welcome"
             component={Welcome}
@@ -26,11 +26,17 @@ export default function Routes(){
             component={Signin}
             options={{ headerShown: false}}
         />
-        {/*<Stack.Screen 
+        <Stack.Screen 
             name="Menu"
             component={Menu}
             options={{ headerShown: false}}
-    />*/}
+        />
+        <Stack.Screen
+            name="Cclient"
+            component={Cclient}
+            options={{ headerShown: false }}
+        />
+       
         </Stack.Navigator>
     )
 }

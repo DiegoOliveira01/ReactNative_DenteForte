@@ -6,6 +6,7 @@ import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native'
 
 export default function Menu(){
+    const navigation = useNavigation();
     return(
         <View style={styles.container}>
             <Animatable.View animation="fadeInUp" delay={500} style={styles.containerHeader}>
@@ -13,22 +14,40 @@ export default function Menu(){
             </Animatable.View>
 
             <Animatable.View animation="fadeInUp" style={styles.containerForm}>
-            <Text style={styles.buttonTextAbove}>Cadastro De Cliente</Text>
-            <TouchableOpacity style={styles.button}>
-                <Text styles={styles.buttonText}>Acessar</Text>
+            <Text style={styles.buttonTextAbove}>Área Do Cliente</Text>
+            <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Cclient')}>
+                <Image style={styles.iconimage}
+                    animation="flipInY"
+                    source={require('../../assets/adicionar-usuario.png')}
+                    resizeMode="stretch"
+                />
+                <Text styles={styles.buttonText}>Cadastro De Cliente</Text>
             </TouchableOpacity>
-            <Text style={styles.buttonTextAbove}>Gerenciamento De Cliente</Text>
             <TouchableOpacity style={styles.button}>
-                <Text styles={styles.buttonText}>Acessar</Text>
+                <Image style={styles.iconimage}
+                    animation="flipInY"
+                    source={require('../../assets/do-utilizador.png')}
+                    resizeMode="stretch"
+                />
+                <Text styles={styles.buttonText}>Gerenciamento De Cliente</Text>
             </TouchableOpacity>
 
-            <Text style={styles.buttonTextAbove}>Cadastro De Funcionários</Text>
+            <Text style={styles.buttonTextAbove}>Àrea Do Funcionário</Text>
             <TouchableOpacity style={styles.button}>
-                <Text styles={styles.buttonText}>Acessar</Text>
+                <Image style={styles.iconimage}
+                    animation="flipInY"
+                    source={require('../../assets/adicionar-usuario.png')}
+                    resizeMode="stretch"
+                />
+                <Text styles={styles.buttonText}>Cadastre De Funcionário</Text>
             </TouchableOpacity>
-            <Text style={styles.buttonTextAbove}>Gerenciamento De Funcionários</Text>
             <TouchableOpacity style={styles.button}>
-                <Text styles={styles.buttonText}>Acessar</Text>
+                <Image style={styles.iconimage}
+                    animation="flipInY"
+                    source={require('../../assets/do-utilizador.png')}
+                    resizeMode="stretch"
+                />
+                <Text styles={styles.buttonText}>Gerenciamento De Funcionário</Text>
             </TouchableOpacity>
             </Animatable.View>
             
@@ -67,6 +86,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color:'#000',
         marginTop: 20,
+    },
+    iconimage:{
+        width: 35,
+        height: 35,
     },
     button:{
         backgroundColor: '#38a69d',
