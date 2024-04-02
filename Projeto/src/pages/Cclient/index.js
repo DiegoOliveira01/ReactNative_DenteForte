@@ -1,11 +1,35 @@
-import React from "react";
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Alert, Button } from 'react-native';
+import axios from 'axios';
+
 
 import * as Animatable from 'react-native-animatable'
 
 import { useNavigation } from '@react-navigation/native'
 
-export default function Cclient(){
+
+
+const CadastroUsuarioScreen = () => {
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+      
+    const cadastrarUsuario = () => {
+        axios.post('http://localhost/cadastro_cliente.php', {
+          email: email,
+          senha: senha
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          console.log(response.data);
+          // Faça algo após o cadastro bem-sucedido
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      }
 
 
 return(
@@ -18,11 +42,21 @@ return(
             <Text style={styles.title}>Email:</Text>
                 <TextInput 
                 placeholder="Digite um Email..." 
+                
+                value={email}
+                onChangeText={text => setEmail(text)}
+                
+
                 style={styles.input}> 
                 </TextInput>
                 <Text style={styles.title}>Senha:</Text>
                 <TextInput 
                 placeholder="Digite sua senha..." 
+
+                value={senha}
+                onChangeText={text => setSenha(text)}
+                
+
                 style={styles.input}>
                 </TextInput>
                 <TouchableOpacity style={styles.button}>
@@ -32,6 +66,7 @@ return(
                     resizeMode="stretch"
                 />
                 <Text styles={styles.buttonText}>Enviar</Text>
+                <Button title="Cadastrar" onPress={cadastrarUsuario} />
             </TouchableOpacity>
         </Animatable.View>
     </View>
@@ -85,3 +120,5 @@ const styles = StyleSheet.create({
     },
 
 })
+
+export default CadastroUsuarioScreen;
