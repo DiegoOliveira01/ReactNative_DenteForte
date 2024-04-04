@@ -12,24 +12,35 @@ import { useNavigation } from '@react-navigation/native'
 const CadastroUsuarioScreen = () => {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [emailValid, setEmailValid] = useState(false);
+    const [senhaValid, setSenhaValid] = useState(false);
       
     const cadastrarUsuario = () => {
-        axios.post('http://localhost/cadastro_cliente.php', {
-          email: email,
-          senha: senha
-        }, {
-          headers: {
-            'Content-Type': 'application/json'
+        if (emailValid && senhaValid) {
+            axios
+              .post('http://localhost/cadastro_cliente.php', {
+                email: email,
+                senha: senha,
+              }, {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              })
+              .then(response => {
+                console.log(response.data);
+                // Faça algo após o cadastro bem-sucedido
+              })
+              .catch(error => {
+                console.error(error);
+              });
+          } else {
+            Alert.alert(
+              'Atenção',
+              'Por favor, preencha corretamente o email e a senha.',
+              [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+            );
           }
-        })
-        .then(response => {
-          console.log(response.data);
-          // Faça algo após o cadastro bem-sucedido
-        })
-        .catch(error => {
-          console.error(error);
-        });
-      }
+        }
 
 
 return(
@@ -44,8 +55,14 @@ return(
                 placeholder="Digite um Email..." 
                 
                 value={email}
-                onChangeText={text => setEmail(text)}
-                
+                onChangeText={text => {
+                    setEmail(text);
+                    if (text.length > 0 && text.includes('@')) {
+                      setEmailValid(true);
+                    } else {
+                      setEmailValid(false);
+                    }
+                  }}
 
                 style={styles.input}> 
                 </TextInput>
@@ -54,20 +71,28 @@ return(
                 placeholder="Digite sua senha..." 
 
                 value={senha}
-                onChangeText={text => setSenha(text)}
+                onChangeText={text => {
+                    setSenha(text);
+                    if (text.length > 5) {
+                      setSenhaValid(true);
+                    } else {
+                      setSenhaValid(false);
+                    }
+                  }}
                 
 
                 style={styles.input}>
                 </TextInput>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity title="Cadastrar" onPress={cadastrarUsuario} style={styles.button}>
                 <Image style={styles.iconimage}
                     animation="flipInY"
                     source={require('../../assets/seta-direita.png')}
                     resizeMode="stretch"
                 />
                 <Text styles={styles.buttonText}>Enviar</Text>
-                <Button title="Cadastrar" onPress={cadastrarUsuario} />
+                
             </TouchableOpacity>
+            
         </Animatable.View>
     </View>
 )
