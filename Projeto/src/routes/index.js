@@ -4,6 +4,7 @@ import Welcome from '../pages/Welcome';
 import Signin from  '../pages/Signin';
 import Menu from  '../pages/Menu';
 import Cclient from '../pages/Cclient'
+import Gclient from '../pages/Gclient'
 
 const Stack = createNativeStackNavigator();
 
@@ -17,10 +18,10 @@ export default function Routes(){
         <Stack.Navigator>
         
         
-        {/* Cclient em teste */}
+        {/* Gclient em teste */}
         <Stack.Screen
-            name="Cclient"
-            component={Cclient}
+            name="Gclient"
+            component={Gclient}
             options={{ headerShown: false }}
         />
         
@@ -40,7 +41,12 @@ export default function Routes(){
             component={Menu}
             options={{ headerShown: false}}
         />
-        {/* Local Do Cclient */}
+        <Stack.Screen
+            name="Cclient"
+            component={Cclient}
+            options={{ headerShown: false }}
+        />
+        
        
         </Stack.Navigator>
     )
