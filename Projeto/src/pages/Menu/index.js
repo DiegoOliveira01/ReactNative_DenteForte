@@ -23,7 +23,7 @@ export default function Menu(){
                 />
                 <Text styles={styles.buttonText}>Cadastro De Cliente</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Gclient')}>
                 <Image style={styles.iconimage}
                     animation="flipInY"
                     source={require('../../assets/do-utilizador.png')}

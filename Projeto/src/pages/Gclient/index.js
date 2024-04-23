@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const ListaClientesScreen = () => {
   const [clientes, setClientes] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,6 +18,10 @@ const ListaClientesScreen = () => {
     };
     fetchData();
   }, []);
+
+  const handleEdit = (idcliente) => {
+    navigation.navigate('Aclient', { idcliente });
+  };
 
   const deleteClient = async (id) => {
     try {
@@ -35,10 +41,13 @@ const ListaClientesScreen = () => {
         renderItem={({ item }) => (
           <View style={styles.cliente}>
             <Text style={styles.email}>Nome: {item.email}</Text>
-            <TouchableOpacity style={styles.deleteButton} onPress={() => deleteClient(item.idcliente)}>
-            <Text style={styles.deleteButtonText}>Excluir</Text>
-            </TouchableOpacity>
             <Text style={styles.email}>Senha: {item.senha}</Text>
+            <TouchableOpacity style={styles.editButton} onPress={() => handleEdit(item.idcliente)}>
+              <Text style={styles.editButtonText}>Editar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.deleteButton} onPress={() => deleteClient(item.idcliente)}>
+              <Text style={styles.deleteButtonText}>Excluir</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -63,6 +72,24 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   email: {
+    fontSize: 16,
+  },
+  editButton: {
+    backgroundColor: 'blue',
+    padding: 8,
+    marginTop: 8,
+  },
+  editButtonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    padding: 8,
+    marginTop: 8,
+  },
+  deleteButtonText: {
+    color: '#fff',
     fontSize: 16,
   },
 });
