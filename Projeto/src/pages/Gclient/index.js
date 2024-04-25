@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const ListaClientesScreen = () => {
   const [clientes, setClientes] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -26,11 +27,21 @@ const ListaClientesScreen = () => {
   const deleteClient = async (id) => {
     try {
       await axios.delete(`http://localhost/deletar_cliente.php?idcliente=${id}`);
-      setClientes(clientes.filter(cliente => cliente.idcliente !== id));
+      setClientes(clientes.filter(cliente => cliente.idcliente!== id));
     } catch (error) {
       console.error(error);
     }
   };
+
+  const handleSearch = (text) => {
+    setSearchTerm(text);
+  };
+
+  const filteredClientes = clientes.filter(cliente => {
+    const nome = cliente.email.toLowerCase();
+    const searchTermLower = searchTerm.toLowerCase();
+    return nome.includes(searchTermLower);
+  });
 
   return (
     <View style={styles.container}>
@@ -43,8 +54,14 @@ const ListaClientesScreen = () => {
                 <Text styles={styles.buttonText}>Voltar</Text>
             </TouchableOpacity>
       <Text style={styles.title}>Lista de Clientes</Text>
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Buscar cliente (Email)"
+        value={searchTerm}
+        onChangeText={handleSearch}
+      />
       <FlatList
-        data={clientes}
+        data={filteredClientes}
         keyExtractor={item => item.idcliente.toString()}
         renderItem={({ item }) => (
           <View style={styles.cliente}>
@@ -103,6 +120,13 @@ const styles = StyleSheet.create({
   deleteButtonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  searchInput: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    padding: 8,
+    marginBottom: 16,
   },
 });
 
