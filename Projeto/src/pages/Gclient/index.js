@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
@@ -34,6 +34,14 @@ const ListaClientesScreen = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Menu')}>
+                <Image style={styles.iconimage}
+                    animation="flipInY"
+                    source={require('../../assets/seta-esquerda.png')}
+                    resizeMode="stretch"
+                />
+                <Text styles={styles.buttonText}>Voltar</Text>
+            </TouchableOpacity>
       <Text style={styles.title}>Lista de Clientes</Text>
       <FlatList
         data={clientes}
@@ -61,6 +69,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 16,
   },
+  iconimage:{
+    width: 35,
+    height: 35,
+},
   title: {
     fontSize: 24,
     fontWeight: 'bold',

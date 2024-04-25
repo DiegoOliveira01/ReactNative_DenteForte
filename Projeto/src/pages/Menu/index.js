@@ -49,6 +49,14 @@ export default function Menu(){
                 />
                 <Text styles={styles.buttonText}>Gerenciamento De Funcionário</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.button_deslogar} onPress={ () => navigation.navigate('Welcome')}>
+                <Image style={styles.iconimage}
+                    animation="flipInY"
+                    source={require('../../assets/deslogar.png')}
+                    resizeMode="stretch"
+                />
+                <Text styles={styles.buttonText}>Deslogar</Text>
+            </TouchableOpacity>
             </Animatable.View>
             
             
@@ -97,6 +105,15 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         paddingVertical: 8,
         marginTop: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    button_deslogar:{
+        backgroundColor: '#CD4242',
+        width: '100%',
+        borderRadius: 4,
+        paddingVertical: 8,
+        marginTop: 54,
         justifyContent: 'center',
         alignItems: 'center',
     },
