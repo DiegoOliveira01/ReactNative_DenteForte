@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image } from 'react-native';
+import * as Animatable from 'react-native-animatable'
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
@@ -52,8 +53,9 @@ const ListaClientesScreen = () => {
                     resizeMode="stretch"
                 />
                 <Text styles={styles.buttonText}>Voltar</Text>
-            </TouchableOpacity>
+      </TouchableOpacity>
       <Text style={styles.title}>Lista de Clientes</Text>
+      <Animatable.View animation="fadeInUp" style={styles.containerForm}>
       <TextInput
         style={styles.searchInput}
         placeholder="Buscar cliente (Email)"
@@ -69,13 +71,25 @@ const ListaClientesScreen = () => {
             <Text style={styles.email}>Senha: {item.senha}</Text>
             <TouchableOpacity style={styles.editButton} onPress={() => handleEdit(item.idcliente)}>
               <Text style={styles.editButtonText}>Editar</Text>
+              <Image style={styles.iconimage}
+                    animation="flipInY"
+                    source={require('../../assets/editing.png')}
+                    resizeMode="stretch"
+                />
             </TouchableOpacity>
             <TouchableOpacity style={styles.deleteButton} onPress={() => deleteClient(item.idcliente)}>
               <Text style={styles.deleteButtonText}>Excluir</Text>
+              <Image style={styles.iconimage}
+                    animation="flipInY"
+                    source={require('../../assets/bin.png')}
+                    resizeMode="stretch"
+                />
             </TouchableOpacity>
+            
           </View>
         )}
       />
+      </Animatable.View>
     </View>
   );
 }
@@ -83,21 +97,37 @@ const ListaClientesScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#38a69d",
     padding: 16,
+  },
+  containerForm:{
+    backgroundColor: '#fff',
+    flex: 1,
+    marginTop: 40,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    paddingStart: '3%',
+    paddingEnd: '3%',
+},
+  button:{
+    marginBottom: 24,
+    marginRight: "92%",
+    
   },
   iconimage:{
     width: 35,
     height: 35,
-},
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 25,
+    alignSelf: "center",
   },
   cliente: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomWidth: 3,
+    borderBottomColor: 'black',
+    borderStyle: "dotted",
     paddingVertical: 8,
   },
   email: {
@@ -123,10 +153,12 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
+    borderColor: '#38a69d',
+    borderWidth: 2,
+    borderRadius: 5,
     padding: 8,
     marginBottom: 16,
+    marginTop: 16,
   },
 });
 
