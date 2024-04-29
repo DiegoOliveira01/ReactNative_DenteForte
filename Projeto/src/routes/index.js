@@ -19,12 +19,8 @@ export default function Routes(){
         <Stack.Navigator>
         
         
-        {/* Gclient Tela em teste */}
-        <Stack.Screen
-            name="Gclient"
-            component={Gclient}
-            options={{ headerShown: false }}
-        />
+        {/* Nada em teste */}
+        
         
 
         <Stack.Screen 
@@ -53,7 +49,11 @@ export default function Routes(){
             component={Aclient}
             options={{ headerShown: false }}
         />
-        
+        <Stack.Screen
+            name="Gclient"
+            component={Gclient}
+            options={{ headerShown: false }}
+        />
        
         </Stack.Navigator>
     )
