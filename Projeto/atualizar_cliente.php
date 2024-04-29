@@ -26,10 +26,12 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 $email = $data['email'] ?? '';
 $senha = $data['senha'] ?? '';
+$endereco = $data['endereco'] ?? '';
+$cpf = $data['cpf'] ?? '';
 
-$sql = "UPDATE cliente SET email = ?, senha = ? WHERE idcliente = ?";
+$sql = "UPDATE cliente SET email = ?, senha = ?, endereco = ?, CPF = ? WHERE idcliente = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ssi", $email, $senha, $idcliente);
+$stmt->bind_param("ssssi", $email, $senha, $endereco, $cpf, $idcliente);
 $stmt->execute();
 
 $conn->close();

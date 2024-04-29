@@ -6,6 +6,8 @@ import { useRoute } from '@react-navigation/native';
 const EditarClienteScreen = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [endereco, setEndereco] = useState('');
+  const [cpf, setCpf] = useState('');
   const route = useRoute();
 
   useEffect(() => {
@@ -14,6 +16,8 @@ const EditarClienteScreen = () => {
         const response = await axios.get(`http://localhost/editar_cliente.php?idcliente=${route.params.idcliente}`);
         setEmail(response.data.email);
         setSenha(response.data.senha);
+        setEndereco(response.data.endereco);
+        setCpf(response.data.CPF);
       } catch (error) {
         console.error(error);
       }
@@ -26,6 +30,8 @@ const EditarClienteScreen = () => {
       await axios.put(`http://localhost/atualizar_cliente.php?idcliente=${route.params.idcliente}`, {
         email,
         senha,
+        endereco,
+        cpf,
       });
       // Redirecione para a tela de lista de clientes após atualizar
     } catch (error) {
@@ -47,6 +53,18 @@ const EditarClienteScreen = () => {
         value={senha}
         onChangeText={text => setSenha(text)}
         placeholder="Senha"
+      />
+      <TextInput
+        style={styles.input}
+        value={endereco}
+        onChangeText={text => setEndereco(text)}
+        placeholder="Endereço"
+      />
+      <TextInput
+        style={styles.input}
+        value={cpf}
+        onChangeText={text => setCpf(text)}
+        placeholder="CPF"
       />
       <TouchableOpacity style={styles.updateButton} onPress={updateClient}>
         <Text style={styles.updateButtonText}>Atualizar</Text>

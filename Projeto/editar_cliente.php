@@ -22,7 +22,7 @@ if ($conn->connect_error) {
 
 $idcliente = isset($_GET['idcliente']) ? $_GET['idcliente'] : die();
 
-$sql = "SELECT idcliente, email, senha FROM cliente WHERE idcliente = ?";
+$sql = "SELECT idcliente, email, senha, endereco, CPF FROM cliente WHERE idcliente = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $idcliente);
 $stmt->execute();

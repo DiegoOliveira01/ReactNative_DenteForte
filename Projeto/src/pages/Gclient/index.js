@@ -67,8 +67,10 @@ const ListaClientesScreen = () => {
         keyExtractor={item => item.idcliente.toString()}
         renderItem={({ item }) => (
           <View style={styles.cliente}>
-            <Text style={styles.email}>Nome: {item.email}</Text>
+            <Text style={styles.email}>Email: {item.email}</Text>
             <Text style={styles.email}>Senha: {item.senha}</Text>
+            <Text style={styles.email}>Endereço: {item.endereco}</Text>
+            <Text style={styles.email}>Senha: {item.CPF}</Text>
             <TouchableOpacity style={styles.editButton} onPress={() => handleEdit(item.idcliente)}>
               <Text style={styles.editButtonText}>Editar</Text>
               <Image style={styles.iconimage}

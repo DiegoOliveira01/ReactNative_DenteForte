@@ -45,11 +45,13 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
     $data = json_decode(file_get_contents('php://input'));
     $email = $data->email;
     $senha = $data->senha;
+    $endereco = $data->endereco;
+    $cpf = $data->cpf;
 
     echo "Email: $email\n";
     echo "Senha: $senha\n";
 
-    $sql = "INSERT INTO cliente (email, senha) VALUES ('$email', '$senha')";
+    $sql = "INSERT INTO cliente (email, senha, endereco, CPF) VALUES ('$email', '$senha', '$endereco', '$cpf')";
     echo $sql;
 
     if ($conn->query($sql) === TRUE) {

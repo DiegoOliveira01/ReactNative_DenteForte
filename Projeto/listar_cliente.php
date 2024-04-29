@@ -18,7 +18,7 @@ if ($conn->connect_error) {
     die("Connection failed: ". $conn->connect_error);
 }
 
-$sql = "SELECT idcliente, email, senha FROM cliente";
+$sql = "SELECT idcliente, email, senha, endereco, CPF FROM cliente";
 $result = $conn->query($sql);
 
 $clientes = [];
