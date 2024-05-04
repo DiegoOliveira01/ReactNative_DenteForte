@@ -15,11 +15,19 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
-    die("Connection failed: ". $conn->connect_error);
+    http_response_code(500);
+    echo json_encode(['error' => 'Connection failed: '. $conn->connect_error]);
+    exit;
 }
 
-$sql = "SELECT idcliente, email, senha, endereco, CPF FROM cliente";
+$sql = "SELECT idcliente, nome, bairro, email, telefone, telefone_emergencia, data_nascimento, cpf, observacoes FROM cliente";
 $result = $conn->query($sql);
+
+if (!$result) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Query failed: '. $conn->error]);
+    exit;
+}
 
 $clientes = [];
 
@@ -28,7 +36,9 @@ if ($result->num_rows > 0) {
         $clientes[] = $row;
     }
 } else {
-    echo "0 results";
+    http_response_code(404);
+    echo json_encode(['error' => 'No results found']);
+    exit;
 }
 
 echo json_encode($clientes);

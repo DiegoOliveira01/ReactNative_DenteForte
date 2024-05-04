@@ -69,6 +69,7 @@ const CadastroClienteScreen = () => {
   const [selectedBairro, setSelectedBairro] = useState('');
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
+  const [telefone_emergencia, setTelefone_Emergencia] = useState('');
   const [dataNascimento, setDataNascimento] = useState('');
   const [cpf, setCpf] = useState('');
   const [observacoes, setObservacoes] = useState('');
@@ -107,6 +108,7 @@ const CadastroClienteScreen = () => {
         bairro: selectedBairro,
         email: email,
         telefone: telefone,
+        telefone_emergencia: telefone_emergencia,
         dataNascimento: dataNascimento,
         cpf: cpf,
         observacoes: observacoes,
@@ -117,7 +119,15 @@ const CadastroClienteScreen = () => {
         })
        .then(response => {
           console.log(response.data);
-          // Faça algo após o cadastro bem-sucedido
+          // Limpar campos de entrada
+          setNome('');
+          setSelectedBairro('');
+          setEmail('');
+          setTelefone('');
+          setTelefone_Emergencia('');
+          setDataNascimento('');
+          setCpf('');
+          setObservacoes('');
         })
        .catch(error => {
           console.error(error);
@@ -134,11 +144,20 @@ const CadastroClienteScreen = () => {
   return (
     <View style={styles.container}>
       <Animatable.View animation="fadeInLeft" delay={500} style={styles.containerHeader}>
+        <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Menu')}>
+                <Image style={styles.iconimage}
+                    animation="flipInY"
+                    source={require('../../assets/seta-esquerda.png')}
+                    resizeMode="stretch"
+                />
+                <Text styles={styles.buttonText}>Voltar</Text>
+        </TouchableOpacity>
         <Text style={styles.message}>Cadastre Um Cliente(a)</Text>
       </Animatable.View>
 
       <ScrollView contentContainerStyle={{ paddingHorizontal: 20}}>
       <Animatable.View animation="fadeInUp" style={styles.containerForm}>
+        
         <Text style={styles.title}>Nome:</Text>
         <TextInput 
           placeholder="Digite o nome do cliente..." 
@@ -178,6 +197,14 @@ const CadastroClienteScreen = () => {
           style={styles.input}
         />
 
+        <Text style={styles.title}>Telefone para emergencias:</Text>
+        <TextInput 
+          placeholder="Digite o telefone de emergencia do cliente..." 
+          value={telefone_emergencia}
+          onChangeText={text => setTelefone_Emergencia(text)}
+          style={styles.input}
+        />
+
         <Text style={styles.title}>Data de Nascimento:</Text>
         <TextInput 
           placeholder="DD/MM/YYYY" 
@@ -205,8 +232,8 @@ const CadastroClienteScreen = () => {
           numberOfLines={3}
         />
 
-        <TouchableOpacity title="Cadastrar" onPress={cadastrarCliente} style={styles.button}>
-          <Image style={styles.iconimage}
+        <TouchableOpacity title="Cadastrar" onPress={cadastrarCliente} style={styles.button_submit}>
+          <Image style={styles.iconimage_submit}
             animation="flipInY"
             source={require('../../assets/seta-direita.png')}
             resizeMode="stretch"
@@ -225,9 +252,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#38a69d",
   },
   containerHeader:{
-    marginTop: '14%',
+    marginTop: '4%',
     marginBottom: '8%',
     paddingStart: '5%',
+  },
+  button:{
+    marginBottom: 24,
+    marginRight: "92%",
+  },
+  iconimage:{
+    width: 35,
+    height: 35,
   },
   message:{
     fontSize: 28,
@@ -258,7 +293,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     fontSize: 16,
   },
-  button:{
+  button_submit:{
     backgroundColor: '#38a69d',
     width: '100%',
     borderRadius: 4,
@@ -267,7 +302,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  iconimage:{
+  iconimage_submit:{
     width: 35,
     height: 35,
   },
@@ -275,7 +310,7 @@ const styles = StyleSheet.create({
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    height: 40,
+    height: 80,
     marginBottom: 12,
     fontSize: 16,
     paddingHorizontal: 10,
@@ -286,7 +321,7 @@ const pickerSelectStyles = StyleSheet.create({
     paddingRight: 30, // to ensure the text is never behind the icon
   },
   inputAndroid: {
-    height: 40,
+    height: 80,
     marginBottom: 12,
     fontSize: 16,
     paddingHorizontal: 10,
