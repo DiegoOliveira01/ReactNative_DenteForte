@@ -19,9 +19,13 @@ export default function Routes(){
         <Stack.Navigator>
         
         
-        {/* Nada em teste */}
+        {/* Cclient em teste */}
         
-        
+        <Stack.Screen
+            name="Cclient"
+            component={Cclient}
+            options={{ headerShown: false }}
+        />
 
         <Stack.Screen 
             name="Welcome"
@@ -39,11 +43,9 @@ export default function Routes(){
             component={Menu}
             options={{ headerShown: false}}
         />
-        <Stack.Screen
-            name="Cclient"
-            component={Cclient}
-            options={{ headerShown: false }}
-        />
+        
+
+
         <Stack.Screen
             name="Aclient"
             component={Aclient}
