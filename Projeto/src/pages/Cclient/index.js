@@ -1,3 +1,4 @@
+import { ScrollView } from 'react-native';
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Alert, Button } from 'react-native';
 import axios from 'axios';
@@ -68,11 +69,36 @@ const CadastroClienteScreen = () => {
   const [selectedBairro, setSelectedBairro] = useState('');
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
-  const [data_nascimento, setData_nascimento] = useState('');
+  const [dataNascimento, setDataNascimento] = useState('');
   const [cpf, setCpf] = useState('');
   const [observacoes, setObservacoes] = useState('');
   const [emailValid, setEmailValid] = useState(false);
 
+
+  const validarData = (text) => {
+    if (text.length > 10) {
+      return;
+    }
+  
+    let newText = text;
+    if (newText.length === 2 || newText.length === 5) {
+      newText += '/';
+    }
+    setDataNascimento(newText);
+  
+    const regex = /^([0-3][0-9])\/([0-1][0-9])\/([0-9]{4})$/;
+    if (regex.test(newText)) {
+      const [day, month, year] = newText.split('/').map(Number);
+      const date = new Date(year, month - 1, day);
+      if (date && date.getMonth() + 1 === month && date.getDate() === day) {
+        console.log("Data válida");
+      } else {
+        console.log("Data inválida");
+      }
+    }
+  }
+  
+  
   const cadastrarCliente = () => {
     if (emailValid) {
       axios
@@ -81,7 +107,7 @@ const CadastroClienteScreen = () => {
         bairro: selectedBairro,
         email: email,
         telefone: telefone,
-        data_nascimento: data_nascimento,
+        dataNascimento: dataNascimento,
         cpf: cpf,
         observacoes: observacoes,
         }, {
@@ -111,6 +137,7 @@ const CadastroClienteScreen = () => {
         <Text style={styles.message}>Cadastre Um Cliente(a)</Text>
       </Animatable.View>
 
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20}}>
       <Animatable.View animation="fadeInUp" style={styles.containerForm}>
         <Text style={styles.title}>Nome:</Text>
         <TextInput 
@@ -153,9 +180,9 @@ const CadastroClienteScreen = () => {
 
         <Text style={styles.title}>Data de Nascimento:</Text>
         <TextInput 
-          placeholder="Digite a data de nascimento do cliente..." 
-          value={data_nascimento}
-          onChangeText={text => setData_nascimento(text)}
+          placeholder="DD/MM/YYYY" 
+          value={dataNascimento}
+          onChangeText={validarData} // Chamando a função para validar a entrada
           style={styles.input}
         />
 
@@ -165,6 +192,7 @@ const CadastroClienteScreen = () => {
           value={cpf}
           onChangeText={text => setCpf(text)}
           style={styles.input}
+          
         />
 
         <Text style={styles.title}>Observações:</Text>
@@ -173,6 +201,8 @@ const CadastroClienteScreen = () => {
           value={observacoes}
           onChangeText={text => setObservacoes(text)}
           style={styles.input_obs}
+          multiline={true}
+          numberOfLines={3}
         />
 
         <TouchableOpacity title="Cadastrar" onPress={cadastrarCliente} style={styles.button}>
@@ -184,6 +214,7 @@ const CadastroClienteScreen = () => {
           <Text styles={styles.buttonText}>Enviar</Text>
         </TouchableOpacity>
       </Animatable.View>
+      </ScrollView>
     </View>
   )
 }
