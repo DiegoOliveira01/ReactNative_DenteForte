@@ -135,7 +135,7 @@ const CadastroClienteScreen = () => {
     } else {
       Alert.alert(
         'Atenção',
-        'Por favor, preencha corretamente o email e a senha.',
+        'Por favor, preencha corretamente o email.',
         [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
       );
     }
@@ -252,9 +252,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#38a69d",
   },
   containerHeader:{
-    marginTop: '4%',
-    marginBottom: '8%',
-    paddingStart: '5%',
+    marginTop: '1%',
+    marginBottom: '3%',
+    paddingStart: '1%',
   },
   button:{
     marginBottom: 24,
@@ -267,7 +267,8 @@ const styles = StyleSheet.create({
   message:{
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#fff'
+    color: '#fff',
+    alignSelf: "center",
   },
   containerForm:{
     backgroundColor: '#fff',
