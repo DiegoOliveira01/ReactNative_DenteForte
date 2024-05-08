@@ -6,7 +6,7 @@ import RNPickerSelect from 'react-native-picker-select';
 
 import * as Animatable from 'react-native-animatable'
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 const bairros = [
   { label: 'Badu', value: 'Badu' },
@@ -64,19 +64,49 @@ const bairros = [
   { label: 'Outro', value: 'Outro' },
 ];
 
+
+
 const EditarClienteScreen = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const idcliente = route.params.idcliente;
+  
   const [nome, setNome] = useState('');
+  const [bairro, setBairro] = useState('');
   const [selectedBairro, setSelectedBairro] = useState('');
   const [email, setEmail] = useState('');
+  const [emailValid, setEmailValid] = useState(false);
   const [telefone, setTelefone] = useState('');
   const [telefone_emergencia, setTelefone_Emergencia] = useState('');
-  const [dataNascimento, setDataNascimento] = useState('');
+  const [data_nascimento, setData_Nascimento] = useState('');
   const [cpf, setCpf] = useState('');
   const [observacoes, setObservacoes] = useState('');
-  const [emailValid, setEmailValid] = useState(false);
 
-  const navigation = useNavigation();
-  const route = navigation.route;
+  
+  
+  
+  const validateEmail = () => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (emailRegex.test(email)) {
+      setEmailValid(true);
+    } else {
+      setEmailValid(false);
+    }
+  };
+
+  useEffect(() => {
+    validateEmail();
+  }, [email]);
+
+  const handleEmailChange = (text) => {
+    setEmail(text);
+    validateEmail();
+  };
+
+  if (!route ||!route.params) {
+    console.error('Route params are undefined');
+    return null;
+  }
 
   const validarData = (text) => {
     if (text.length > 10) {
@@ -87,7 +117,7 @@ const EditarClienteScreen = () => {
     if (newText.length === 2 || newText.length === 5) {
       newText += '/';
     }
-    setDataNascimento(newText);
+    setData_Nascimento(newText);
   
     const regex = /^([0-3][0-9])\/([0-1][0-9])\/([0-9]{4})$/;
     if (regex.test(newText)) {
@@ -101,41 +131,41 @@ const EditarClienteScreen = () => {
     }
   }
  // http://localhost/editar_cliente.php?idcliente=
-  useEffect(() => {
-    const fetchData = async () => {
-      if (route.params && route.params.idcliente) {
-        const response = await api.get(`/clientes/${route.params.idcliente}`);
-        setCliente(response.data);
-        setNome(response.data.nome);
-        setBairro(response.data.bairro);
-        setEmail(response.data.email);
-        setTelefone(response.data.telefone);
-        setTelefone_Emergencia(response.data.telefone_emergencia);
-        setDataNascimento(response.data.data_nascimento);
-        setCpf(response.data.cpf);
-        setObservacoes(response.data.observacoes);
-      try{
+ useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://192.168.1.110/editar_cliente.php?idcliente=${idcliente}`);
+      const client = response.data;
 
-      
-      } catch (error) {
-        console.error(error);
-      }
-    };}
-    fetchData();
-  }, [route]);
+      setNome(client.nome);
+      setSelectedBairro(client.bairro);
+      setEmail(client.email);
+      setTelefone(client.telefone);
+      setTelefone_Emergencia(client.telefone_emergencia);
+      setData_Nascimento(client.data_nascimento);
+      setCpf(client.cpf);
+      setObservacoes(client.observacoes);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchData();
+}, [idcliente]);
 
   const updateClient = async () => {
     if (emailValid) {
-      await axios.put(`http://localhost/atualizar_cliente.php?idcliente=${route.params.idcliente}`, {
+      const response = await axios.put(`http://192.168.1.110/atualizar_cliente.php?idcliente=${route.params.idcliente}`, {
         nome,
         selectedBairro,
         email,
         telefone,
         telefone_emergencia,
-        dataNascimento,
+        data_nascimento,
         cpf,
         observacoes,
       });
+     
       try{
         console.log(response.data);
       
@@ -143,12 +173,15 @@ const EditarClienteScreen = () => {
       console.error(error);
     }
   }
+  else{
+    alert("O e-mail inserido é inválido!");
+  }
   };
 
   return (
     <View style={styles.container}>
       <Animatable.View animation="fadeInLeft" delay={500} style={styles.containerHeader}>
-        <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Menu')}>
+        <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Gclient')}>
                 <Image style={styles.iconimage}
                     animation="flipInY"
                     source={require('../../assets/seta-esquerda.png')}
@@ -156,7 +189,7 @@ const EditarClienteScreen = () => {
                 />
                 <Text styles={styles.buttonText}>Voltar</Text>
         </TouchableOpacity>
-        <Text style={styles.message}>Cadastre Um Cliente(a)</Text>
+        <Text style={styles.message}>Atualize Um Cliente(a)</Text>
       </Animatable.View>
 
       <ScrollView contentContainerStyle={{ paddingHorizontal: 20}}>
@@ -172,7 +205,7 @@ const EditarClienteScreen = () => {
 
         <Text style={styles.title}>Bairro:</Text>
         <RNPickerSelect
-          placeholder={{ label: 'Selecione um bairro', value: '' }}
+          placeholder={{ label: selectedBairro ? selectedBairro : 'Selecione um bairro', value: selectedBairro }}
           onValueChange={(value) => setSelectedBairro(value)}
           items={bairros}
           style={pickerSelectStyles}
@@ -182,14 +215,7 @@ const EditarClienteScreen = () => {
         <TextInput 
           placeholder="Digite o bairro do cliente..." 
           value={email}
-          onChangeText={text => {
-            setEmail(text);
-            if (text.length > 0 && text.includes('@')) {
-              setEmailValid(true);
-            } else {
-              setEmailValid(false);
-            }
-          }}
+          onChangeText={handleEmailChange}
           style={styles.input}
         />
 
@@ -212,7 +238,7 @@ const EditarClienteScreen = () => {
         <Text style={styles.title}>Data de Nascimento:</Text>
         <TextInput 
           placeholder="DD/MM/YYYY" 
-          value={dataNascimento}
+          value={data_nascimento}
           onChangeText={validarData} // Chamando a função para validar a entrada
           style={styles.input}
         />
@@ -262,7 +288,7 @@ const styles = StyleSheet.create({
   },
   button:{
     marginBottom: 24,
-    marginRight: "92%",
+    marginRight: "90%",
   },
   iconimage:{
     width: 35,

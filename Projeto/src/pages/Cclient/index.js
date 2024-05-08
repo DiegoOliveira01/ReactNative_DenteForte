@@ -65,6 +65,7 @@ const bairros = [
 ];
 
 const CadastroClienteScreen = () => {
+  const navigation = useNavigation();
   const [nome, setNome] = useState('');
   const [selectedBairro, setSelectedBairro] = useState('');
   const [email, setEmail] = useState('');
@@ -103,7 +104,7 @@ const CadastroClienteScreen = () => {
   const cadastrarCliente = () => {
     if (emailValid) {
       axios
-       .post('http://localhost/cadastro_cliente.php', {
+       .post('http://192.168.1.110/cadastro_cliente.php', {
         nome: nome,
         bairro: selectedBairro,
         email: email,
@@ -258,7 +259,7 @@ const styles = StyleSheet.create({
   },
   button:{
     marginBottom: 24,
-    marginRight: "92%",
+    marginRight: "90%",
   },
   iconimage:{
     width: 35,

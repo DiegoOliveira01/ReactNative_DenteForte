@@ -25,7 +25,7 @@ $idcliente = isset($_GET['idcliente']) ? $_GET['idcliente'] : die();
 $data = json_decode(file_get_contents('php://input'), true);
 
 $nome = $data['nome'] ?? '';
-$bairro = $data['bairro'] ?? '';
+$bairro = $data['selectedBairro'] ?? '';
 $email = $data['email'] ?? '';
 $telefone = $data['telefone'] ?? '';
 $telefone_emergencia = $data['telefone_emergencia'] ?? '';

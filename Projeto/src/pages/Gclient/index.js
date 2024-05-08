@@ -13,7 +13,7 @@ const ListaClientesScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost/listar_cliente.php');
+        const response = await axios.get('http://192.168.1.110/listar_cliente.php');
         setClientes(response.data);
       } catch (error) {
         console.error(error);
@@ -28,18 +28,27 @@ const ListaClientesScreen = () => {
   };
 
   const deleteClient = async (id) => {
-    const confirmDelete = window.confirm(
-      'Você tem certeza que deseja excluir esse cliente?'
+    const confirmDelete = Alert.alert(
+      'Excluir Cliente',
+      'Você tem certeza que deseja excluir esse cliente?',
+      [
+        {
+          text: 'Sim',
+          onPress: () => {
+            try {
+              axios.delete(`http://192.168.1.110/deletar_cliente.php?idcliente=${id}`);
+              setClientes(clientes.filter(cliente => cliente.idcliente !== id));
+            } catch (error) {
+              console.error(error);
+            }
+          }
+        },
+        {
+          text: 'Não',
+          style: 'cancel'
+        }
+      ]
     );
-  
-    if (confirmDelete) {
-      try {
-        await axios.delete(`http://localhost/deletar_cliente.php?idcliente=${id}`);
-        setClientes(clientes.filter(cliente => cliente.idcliente!== id));
-      } catch (error) {
-        console.error(error);
-      }
-    };
   };
 
   const handleSearch = (text) => {
@@ -78,15 +87,15 @@ const ListaClientesScreen = () => {
         keyExtractor={item => item.idcliente.toString()}
         renderItem={({ item }) => (
           <View style={styles.cliente}>
-            <Text style={styles.dados}>idcliente: {item.idcliente}</Text>
+            <Text style={styles.dados}>ID Do Cliente: {item.idcliente}</Text>
             <Text style={styles.dados}>Nome: {item.nome}</Text>
             <Text style={styles.dados}>Bairro: {item.bairro}</Text>
             <Text style={styles.dados}>email: {item.email}</Text>
             <Text style={styles.dados}>Telefone: {item.telefone}</Text>
-            <Text style={styles.dados}>Telefone de emergencia: {item.telefone_emergencia}</Text>
-            <Text style={styles.dados}>Data de nascimento: {item.data_nascimento}</Text>
-            <Text style={styles.dados}>cpf: {item.cpf}</Text>
-            <Text style={styles.dados}>observacoes: {item.observacoes}</Text>
+            <Text style={styles.dados}>Telefone de Emergencia: {item.telefone_emergencia}</Text>
+            <Text style={styles.dados}>Data de Nascimento: {item.data_nascimento}</Text>
+            <Text style={styles.dados}>CPF: {item.cpf}</Text>
+            <Text style={styles.dados}>Observacoes: {item.observacoes}</Text>
             <TouchableOpacity style={styles.editButton} onPress={() => handleEdit(item.idcliente)}>
               <Text style={styles.editButtonText}>Editar</Text>
               <Image style={styles.iconimage}
@@ -129,7 +138,7 @@ const styles = StyleSheet.create({
 },
   button:{
     marginBottom: 24,
-    marginRight: "92%",
+    marginRight: "90%",
     
   },
   iconimage:{
