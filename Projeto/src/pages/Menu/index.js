@@ -43,7 +43,7 @@ export default function Menu(){
                 />
                 <Text styles={styles.buttonText}>Cadastro De Funcionário</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Gfunctionary')}>
                 <Image style={styles.iconimage}
                     animation="flipInY"
                     source={require('../../assets/do-utilizador.png')}

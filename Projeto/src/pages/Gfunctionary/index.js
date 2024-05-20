@@ -5,47 +5,47 @@ import * as Animatable from 'react-native-animatable'
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
-const ListaClientesScreen = () => {
-  const [clientes, setClientes] = useState([]);
+const ListaFuncionariosScreen = () => {
+  const [funcionario, setFuncionario] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.1.110/listar_cliente.php');
-        setClientes(response.data);
+        const response = await axios.get('http://192.168.1.110/listar_funcionario.php');
+        setFuncionario(response.data);
       } catch (error) {
         console.error(error);
-        setClientes([]);
+        setFuncionario([]);
       }
     };
     fetchData();
   }, []);
 
-  const handleEdit = (idcliente) => {
-    navigation.navigate('Aclient', { idcliente });
+  const handleEdit = (idfuncionario) => {
+    navigation.navigate('Afunctionary', { idfuncionario });
   };
 
-  const deleteClient = async (id) => {
+  const deleteFunctionary = async (id) => {
     const confirmDelete = Alert.alert(
-      'Excluir Cliente',
-      'Você tem certeza que deseja excluir esse cliente?',
+      'Excluir Funcionário',
+      'Você tem certeza que deseja excluir esse funcionário?',
       [
         {
           text: 'Sim',
           onPress: () => {
             try {
-              axios.delete(`http://192.168.1.110/deletar_cliente.php?idcliente=${id}`);
-              setClientes(clientes.filter(cliente => cliente.idcliente !== id));
+              axios.delete(`http://192.168.1.110/deletar_funcionario.php?idfuncionario=${id}`);
+              setFuncionario(funcionario.filter(funcionario => funcionario.idfuncionario !== id));
             } catch (error) {
               console.error(error);
             }
           }
         },
         Alert.alert(
-          'Funcionário excluido com sucesso!'
-      ),
+            'Funcionário excluido com sucesso!'
+        ),
         {
           text: 'Não',
           style: 'cancel'
@@ -54,14 +54,14 @@ const ListaClientesScreen = () => {
     );
   };
 
-  const atualizarClientes = async () => {
+  const atualizarFuncionarios = async () => {
     try {
-      const response = await axios.get('http://192.168.1.110/listar_cliente.php');
-      setClientes(response.data);
-      Alert.alert('Clientes atualizados com sucesso!');
+      const response = await axios.get('http://192.168.1.110/listar_funcionario.php');
+      setFuncionario(response.data);
+      Alert.alert('Funcionários atualizados com sucesso!');
     } catch (error) {
       console.error(error);
-      Alert.alert('Erro ao atualizar clientes.');
+      Alert.alert('Erro ao atualizar Funcionários.');
     }
   };
 
@@ -69,10 +69,10 @@ const ListaClientesScreen = () => {
     setSearchTerm(text);
   };
 
-  const filterClientes = () => {
-    if (!Array.isArray(clientes)) return [];
-    return clientes.filter((cliente) => {
-      const nome = cliente.nome.toLowerCase();
+  const filterFuncionarios = () => {
+    if (!Array.isArray(funcionario)) return [];
+    return funcionario.filter((funcionarios) => {
+      const nome = funcionarios.nome.toLowerCase();
       const searchTermLower = searchTerm.toLowerCase();
       return nome.includes(searchTermLower);
     });
@@ -88,7 +88,7 @@ const ListaClientesScreen = () => {
                 />
                 <Text styles={styles.buttonText}>Voltar</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button_atualizar} onPress={atualizarClientes}>
+      <TouchableOpacity style={styles.button_atualizar} onPress={atualizarFuncionarios}>
                 <Image style={styles.iconimage}
                     animation="flipInY"
                     source={require('../../assets/recarregar.png')}
@@ -96,29 +96,30 @@ const ListaClientesScreen = () => {
                 />
                 <Text styles={styles.buttonText}>Atualizar</Text>
       </TouchableOpacity>
-      <Text style={styles.title}>Lista de Clientes</Text>
+      <Text style={styles.title}>Lista de Funcionários</Text>
       <Animatable.View animation="fadeInUp" style={styles.containerForm}>
       <TextInput
         style={styles.searchInput}
-        placeholder="Buscar cliente (Nome)"
+        placeholder="Buscar Funcionário (Nome)"
         value={searchTerm}
         onChangeText={handleSearch}
       />
       <FlatList
-        data={filterClientes()}
-        keyExtractor={item => item.idcliente.toString()}
+        data={filterFuncionarios()}
+        keyExtractor={item => item.idfuncionario.toString()}
         renderItem={({ item }) => (
-          <View style={styles.cliente}>
-            <Text style={styles.dados}>ID Do Cliente: {item.idcliente}</Text>
+          <View style={styles.funcionario}>
+            <Text style={styles.dados}>ID Do Cliente: {item.idfuncionario}</Text>
             <Text style={styles.dados}>Nome: {item.nome}</Text>
+            <Text style={styles.dados}>Função: {item.funcao}</Text>
             <Text style={styles.dados}>Bairro: {item.bairro}</Text>
             <Text style={styles.dados}>email: {item.email}</Text>
             <Text style={styles.dados}>Telefone: {item.telefone}</Text>
-            <Text style={styles.dados}>Telefone de Emergencia: {item.telefone_emergencia}</Text>
             <Text style={styles.dados}>Data de Nascimento: {item.data_nascimento}</Text>
             <Text style={styles.dados}>CPF: {item.cpf}</Text>
-            <Text style={styles.dados}>Observacoes: {item.observacoes}</Text>
-            <TouchableOpacity style={styles.editButton} onPress={() => handleEdit(item.idcliente)}>
+            <Text style={styles.dados}>CRO: {item.cro}</Text>
+            <Text style={styles.dados}>Horário: {item.horario}</Text>
+            <TouchableOpacity style={styles.editButton} onPress={() => handleEdit(item.idfuncionario)}>
               <Text style={styles.editButtonText}>Editar</Text>
               <Image style={styles.iconimage}
                     animation="flipInY"
@@ -126,7 +127,7 @@ const ListaClientesScreen = () => {
                     resizeMode="stretch"
                 />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.deleteButton} onPress={() => deleteClient(item.idcliente)}>
+            <TouchableOpacity style={styles.deleteButton} onPress={() => deleteFunctionary(item.idfuncionario)}>
               <Text style={styles.deleteButtonText}>Excluir</Text>
               <Image style={styles.iconimage}
                     animation="flipInY"
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
     marginBottom: 45,
     alignSelf: "center",
   },
-  cliente: {
+  funcionario: {
     borderStyle: "solid",
     paddingVertical: 8,
     borderWidth: 4,
@@ -225,4 +226,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListaClientesScreen;
+export default ListaFuncionariosScreen;

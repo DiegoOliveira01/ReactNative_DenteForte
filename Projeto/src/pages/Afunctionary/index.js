@@ -1,5 +1,5 @@
 import { ScrollView } from 'react-native';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Alert, Button } from 'react-native';
 import axios from 'axios';
 import RNPickerSelect from 'react-native-picker-select';
@@ -7,7 +7,7 @@ import { TextInputMask } from 'react-native-masked-text'
 
 import * as Animatable from 'react-native-animatable'
 
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 const bairros = [
   { label: 'Badu', value: 'Badu' },
@@ -82,8 +82,13 @@ const horarios = [
     { label: 'Seg-Sex 12H até 18H e Sáb 8H até 14H', value: 'Seg-Sex 12H até 18H e Sáb 8H até 14H' },
 ];
 
-const CadastroFuncionarioScreen = () => {
+
+
+const EditarFuncionarioScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const idfuncionario = route.params.idfuncionario;
+  
   const [nome, setNome] = useState('');
   const [selectedFuncao, setSelectedFuncao] = useState('');
   const [selectedBairro, setSelectedBairro] = useState('');
@@ -94,66 +99,76 @@ const CadastroFuncionarioScreen = () => {
   const [cro, setCro] = useState('');
   const [selectedHorario, setSelectedHorario] = useState('');
 
-  const [emailValid, setEmailValid] = useState(false);  
-  const [nomeValid, setNomeValid] = useState(false); 
-  const [telefoneValid, setTelefoneValid] = useState(false); 
-  const [data_nascimentoValid, setData_NascimentoValid] = useState(false);
-  const [cpfValid, setCpfValid] = useState(false);
+  const [emailValid, setEmailValid] = useState(true);  
+  const [nomeValid, setNomeValid] = useState(true); 
+  const [telefoneValid, setTelefoneValid] = useState(true); 
+  const [data_nascimentoValid, setData_NascimentoValid] = useState(true);
+  const [cpfValid, setCpfValid] = useState(true);
   const [croValid, setCroValid] = useState(true);
 
-  
-    
-  const cadastrarFuncionario = () => {
-    if (emailValid && nomeValid && telefoneValid && data_nascimentoValid && cpfValid && croValid) {
-      axios
-       .post('http://192.168.1.110/cadastro_funcionario.php', {
-        nome: nome,
-        funcao: selectedFuncao,
-        bairro: selectedBairro,
-        email: email,
-        telefone: telefone,
-        dataNascimento: dataNascimento,
-        cpf: cpf,
-        cro: cro,
-        horario: selectedHorario,
-        }, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-       .then(response => {
-          console.log(response.data);
-          // Limpar campos de entrada
-          setNome('');
-          setSelectedBairro('');
-          setSelectedFuncao('');
-          setEmail('');
-          setTelefone('');
-          setDataNascimento('');
-          setCpf('');
-          setCro('');
-          setSelectedHorario('');
-        })
-       .catch(error => {
-          console.error(error);
-        });
-        Alert.alert(
-          'Sucesso!',
-          'Usuário cadastrado com sucesso.',
-        );
-    } else {
-      Alert.alert(
-        'Atenção',
-        'Por favor, preencha todos os dados corretamente.',
-        [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
-      );
+
+ useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://192.168.1.110/editar_funcionario.php?idfuncionario=${idfuncionario}`);
+      const funcionario = response.data;
+
+      setNome(funcionario.nome);
+      setSelectedFuncao(funcionario.funcao);
+      setSelectedBairro(funcionario.bairro);
+      setEmail(funcionario.email);
+      setTelefone(funcionario.telefone);
+      setDataNascimento(funcionario.data_nascimento);
+      setCpf(funcionario.cpf);
+      setCro(funcionario.cro);
+      setSelectedHorario(funcionario.horario);
+    } catch (error) {
+      console.error(error);
     }
+  };
+
+  fetchData();
+}, [idfuncionario]);
+
+  const updateFunctionary = async () => {
+    if (emailValid && nomeValid && telefoneValid && data_nascimentoValid && cpfValid && croValid) {
+      const response = await axios.put(`http://192.168.1.110/atualizar_funcionario.php?idfuncionario=${route.params.idfuncionario}`, {
+        nome,
+        selectedFuncao,
+        selectedBairro,
+        email,
+        telefone,
+        dataNascimento,
+        cpf,
+        cro,
+        selectedHorario,
+        
+      });
+      try{
+        console.log(response.data);
+      
+    } catch (error) {
+      console.error(error);
+    }
+    Alert.alert(
+      'Sucesso!',
+      'Usuário atualizado com sucesso.',
+    );
+    navigation.navigate('Gfunctionary')
   }
+  else{
+    Alert.alert(
+      'Atenção',
+      'Por favor, preencha todos os dados corretamente',
+      [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+    )
+  }
+  };
 
   return (
     <View style={styles.container}>
       <Animatable.View animation="fadeInLeft" delay={500} style={styles.containerHeader}>
-        <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Menu')}>
+        <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Gfunctionary')}>
                 <Image style={styles.iconimage}
                     animation="flipInY"
                     source={require('../../assets/seta-esquerda.png')}
@@ -161,13 +176,13 @@ const CadastroFuncionarioScreen = () => {
                 />
                 <Text styles={styles.buttonText}>Voltar</Text>
         </TouchableOpacity>
-        <Text style={styles.message}>Cadastre Um funcionário(a)</Text>
+        <Text style={styles.message}>Atualize Um Funcionário(a)</Text>
       </Animatable.View>
 
       <ScrollView contentContainerStyle={{ paddingHorizontal: 20}}>
       <Animatable.View animation="fadeInUp" style={styles.containerForm}>
         
-        <Text style={styles.title}>Nome:</Text>
+      <Text style={styles.title}>Nome:</Text>
         <TextInput 
           placeholder="Digite o nome do funcionário..." 
           value={nome}
@@ -187,7 +202,7 @@ const CadastroFuncionarioScreen = () => {
 
         <Text style={styles.title}>Função:</Text>
         <RNPickerSelect
-          placeholder={{ label: 'Selecione uma função', value: '' }}
+          placeholder={{ label: selectedFuncao ? selectedFuncao : 'Selecione uma função', value: selectedFuncao }}
           onValueChange={(value) => setSelectedFuncao(value)}
           items={funcoes}
           style={pickerSelectStyles}
@@ -195,7 +210,7 @@ const CadastroFuncionarioScreen = () => {
 
         <Text style={styles.title}>Bairro:</Text>
         <RNPickerSelect
-          placeholder={{ label: 'Selecione um bairro', value: '' }}
+          placeholder={{ label: selectedBairro ? selectedBairro : 'Selecione um bairro', value: selectedBairro }}
           onValueChange={(value) => setSelectedBairro(value)}
           items={bairros}
           style={pickerSelectStyles}
@@ -238,7 +253,7 @@ const CadastroFuncionarioScreen = () => {
           ]}
         />
 
-        <Text style={styles.title}>Data de Nascimento:</Text>
+<Text style={styles.title}>Data de Nascimento:</Text>
         <TextInputMask
           type={'datetime'}
           options={{
@@ -263,7 +278,7 @@ const CadastroFuncionarioScreen = () => {
         <Text style={styles.title}>CPF:</Text>
         <TextInputMask 
           type={'cpf'}
-          placeholder="Digite o CPF do funcionário..." 
+          placeholder="Digite o CPF do Funcionário..." 
           value={cpf}
           onChangeText={text => {
             setCpf(text);
@@ -301,13 +316,13 @@ const CadastroFuncionarioScreen = () => {
 
         <Text style={styles.title}>Horário de trabalho:</Text>
         <RNPickerSelect
-          placeholder={{ label: 'Selecione um horário', value: '' }}
+          placeholder={{ label: selectedHorario ? selectedHorario : 'Selecione um horário', value: selectedHorario }}
           onValueChange={(value) => setSelectedHorario(value)}
           items={horarios}
           style={pickerSelectStyles}
         />
 
-        <TouchableOpacity title="Cadastrar" onPress={cadastrarFuncionario} style={styles.button_submit}>
+        <TouchableOpacity title="Cadastrar" onPress={updateFunctionary} style={styles.button_submit}>
           <Image style={styles.iconimage_submit}
             animation="flipInY"
             source={require('../../assets/seta-direita.png')}
@@ -332,20 +347,15 @@ const styles = StyleSheet.create({
     paddingStart: '1%',
   },
   button:{
-    marginTop: 10,
-    marginBottom: 34,
-    alignItems: "center",
-    position: 'absolute',
-    left: 16,
+    marginBottom: 24,
+    marginRight: "90%",
   },
   iconimage:{
     width: 35,
     height: 35,
   },
   message:{
-    fontSize: 26,
-    marginTop: 35,
-    marginBottom: 25,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#fff',
     alignSelf: "center",
@@ -419,5 +429,4 @@ const pickerSelectStyles = StyleSheet.create({
     paddingRight: 30, // to ensure the text is never behind the icon
   },
 });
-
-export default CadastroFuncionarioScreen;
+export default EditarFuncionarioScreen;

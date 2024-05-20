@@ -30,7 +30,7 @@ if (!isset($data['nome']) ||!isset($data['bairro']) ||!isset($data['funcao']) ||
 }
 
 // Prepare SQL statement
-$sql = "INSERT INTO funcionarios (nome, funcao, bairro, email, telefone,  data_nascimento, cpf, cro, horario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO funcionario (nome, funcao, bairro, email, telefone,  data_nascimento, cpf, cro, horario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 // Bind parameters
 $stmt = $conn->prepare($sql);
