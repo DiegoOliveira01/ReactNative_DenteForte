@@ -51,6 +51,17 @@ const ListaClientesScreen = () => {
     );
   };
 
+  const atualizarClientes = async () => {
+    try {
+      const response = await axios.get('http://192.168.1.110/listar_cliente.php');
+      setClientes(response.data);
+      Alert.alert('Clientes atualizados com sucesso!');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Erro ao atualizar clientes.');
+    }
+  };
+
   const handleSearch = (text) => {
     setSearchTerm(text);
   };
@@ -66,13 +77,21 @@ const ListaClientesScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Menu')}>
+      <TouchableOpacity style={styles.button_voltar} onPress={ () => navigation.navigate('Menu')}>
                 <Image style={styles.iconimage}
                     animation="flipInY"
                     source={require('../../assets/seta-esquerda.png')}
                     resizeMode="stretch"
                 />
                 <Text styles={styles.buttonText}>Voltar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button_atualizar} onPress={atualizarClientes}>
+                <Image style={styles.iconimage}
+                    animation="flipInY"
+                    source={require('../../assets/recarregar.png')}
+                    resizeMode="stretch"
+                />
+                <Text styles={styles.buttonText}>Atualizar</Text>
       </TouchableOpacity>
       <Text style={styles.title}>Lista de Clientes</Text>
       <Animatable.View animation="fadeInUp" style={styles.containerForm}>
@@ -136,10 +155,20 @@ const styles = StyleSheet.create({
     paddingStart: '3%',
     paddingEnd: '3%',
 },
-  button:{
+  button_voltar:{
+    marginTop: 10,
     marginBottom: 24,
-    marginRight: "90%",
+    alignItems: "center",
+    position: 'absolute',
+    left: 16,
     
+  },
+  button_atualizar:{
+    marginTop: 10,
+    marginBottom: 24,
+    alignItems: "center",
+    position: 'absolute',
+    right: 16,
   },
   iconimage:{
     width: 35,
@@ -148,7 +177,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 25,
+    marginTop: 45,
+    marginBottom: 45,
     alignSelf: "center",
   },
   cliente: {

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Alert, Button } from 'react-native';
 import axios from 'axios';
 import RNPickerSelect from 'react-native-picker-select';
+import { TextInputMask } from 'react-native-masked-text'
 
 import * as Animatable from 'react-native-animatable'
 
@@ -74,35 +75,19 @@ const CadastroClienteScreen = () => {
   const [dataNascimento, setDataNascimento] = useState('');
   const [cpf, setCpf] = useState('');
   const [observacoes, setObservacoes] = useState('');
-  const [emailValid, setEmailValid] = useState(false);
 
+  const [emailValid, setEmailValid] = useState(false);  
+  const [nomeValid, setNomeValid] = useState(false); 
+  const [telefoneValid, setTelefoneValid] = useState(false); 
+  const [telefone_emergenciaValid, setTelefone_EmergenciaValid] = useState(false);
+  const [data_nascimentoValid, setData_NascimentoValid] = useState(false);
+  const [cpfValid, setCpfValid] = useState(false);
+  const [observacoesValid, setObservacoesValid] = useState(true);
 
-  const validarData = (text) => {
-    if (text.length > 10) {
-      return;
-    }
   
-    let newText = text;
-    if (newText.length === 2 || newText.length === 5) {
-      newText += '/';
-    }
-    setDataNascimento(newText);
-  
-    const regex = /^([0-3][0-9])\/([0-1][0-9])\/([0-9]{4})$/;
-    if (regex.test(newText)) {
-      const [day, month, year] = newText.split('/').map(Number);
-      const date = new Date(year, month - 1, day);
-      if (date && date.getMonth() + 1 === month && date.getDate() === day) {
-        console.log("Data válida");
-      } else {
-        console.log("Data inválida");
-      }
-    }
-  }
-  
-  
+    
   const cadastrarCliente = () => {
-    if (emailValid) {
+    if (emailValid && nomeValid && telefoneValid && telefone_emergenciaValid && data_nascimentoValid && cpfValid && observacoesValid) {
       axios
        .post('http://192.168.1.110/cadastro_cliente.php', {
         nome: nome,
@@ -133,10 +118,14 @@ const CadastroClienteScreen = () => {
        .catch(error => {
           console.error(error);
         });
+        Alert.alert(
+          'Sucesso!',
+          'Usuário cadastrado com sucesso.',
+        );
     } else {
       Alert.alert(
         'Atenção',
-        'Por favor, preencha corretamente o email.',
+        'Por favor, preencha todos os dados corretamente.',
         [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
       );
     }
@@ -163,8 +152,18 @@ const CadastroClienteScreen = () => {
         <TextInput 
           placeholder="Digite o nome do cliente..." 
           value={nome}
-          onChangeText={text => setNome(text)}
-          style={styles.input}
+          onChangeText={text => {
+            setNome(text);
+            if (text.length > 0 && text.length <= 45) {
+              setNomeValid(true);
+            } else {
+              setNomeValid(false);
+            }
+          }}
+          style={[
+            styles.input, 
+            nomeValid ? styles.inputValid : styles.inputInvalid
+          ]}
         />
 
         <Text style={styles.title}>Bairro:</Text>
@@ -181,45 +180,95 @@ const CadastroClienteScreen = () => {
           value={email}
           onChangeText={text => {
             setEmail(text);
-            if (text.length > 0 && text.includes('@')) {
+            if (text.length > 0 && text.includes('@') && text.includes('.com')) {
               setEmailValid(true);
             } else {
               setEmailValid(false);
             }
           }}
-          style={styles.input}
+          style={[
+            styles.input, 
+            emailValid ? styles.inputValid : styles.inputInvalid
+          ]}
         />
 
         <Text style={styles.title}>Telefone:</Text>
-        <TextInput 
+        <TextInputMask 
+          type={'cel-phone'}
           placeholder="Digite o telefone do cliente..." 
           value={telefone}
-          onChangeText={text => setTelefone(text)}
-          style={styles.input}
+          onChangeText={text => {
+            setTelefone(text);
+            if (text.length > 13) {
+              setTelefoneValid(true);
+            } else {
+              setTelefoneValid(false);
+            }
+          }}
+          style={[
+            styles.input, 
+            telefoneValid ? styles.inputValid : styles.inputInvalid
+          ]}
         />
 
         <Text style={styles.title}>Telefone para emergencias:</Text>
-        <TextInput 
+        <TextInputMask 
+          type={'cel-phone'}
           placeholder="Digite o telefone de emergencia do cliente..." 
           value={telefone_emergencia}
-          onChangeText={text => setTelefone_Emergencia(text)}
-          style={styles.input}
+          onChangeText={text => {
+            setTelefone_Emergencia(text);
+            if (text.length > 13) {
+              setTelefone_EmergenciaValid(true);
+            } else {
+              setTelefone_EmergenciaValid(false);
+            }
+          }}
+          style={[
+            styles.input, 
+            telefone_emergenciaValid ? styles.inputValid : styles.inputInvalid
+          ]}
         />
 
         <Text style={styles.title}>Data de Nascimento:</Text>
-        <TextInput 
+        <TextInputMask
+          type={'datetime'}
+          options={{
+            format: 'DD/MM/YYYY'
+          }}
           placeholder="DD/MM/YYYY" 
           value={dataNascimento}
-          onChangeText={validarData} // Chamando a função para validar a entrada
-          style={styles.input}
+          onChangeText={text => {
+            setDataNascimento(text);
+            if (text.length == 10) {
+              setData_NascimentoValid(true);
+            } else {
+              setData_NascimentoValid(false);
+            }
+          }}
+          style={[
+            styles.input, 
+           data_nascimentoValid ? styles.inputValid : styles.inputInvalid
+          ]}
         />
 
         <Text style={styles.title}>CPF:</Text>
-        <TextInput 
+        <TextInputMask 
+          type={'cpf'}
           placeholder="Digite o CPF do cliente..." 
           value={cpf}
-          onChangeText={text => setCpf(text)}
-          style={styles.input}
+          onChangeText={text => {
+            setCpf(text);
+            if (text.length == 14) {
+              setCpfValid(true);
+            } else {
+              setCpfValid(false);
+            }
+          }}
+          style={[
+            styles.input, 
+           cpfValid ? styles.inputValid : styles.inputInvalid
+          ]}
           
         />
 
@@ -227,10 +276,21 @@ const CadastroClienteScreen = () => {
         <TextInput 
           placeholder="Digite as observações do cliente..." 
           value={observacoes}
-          onChangeText={text => setObservacoes(text)}
-          style={styles.input_obs}
           multiline={true}
           numberOfLines={3}
+          onChangeText={text => {
+            setObservacoes(text);
+            if (text.length < 90) {
+              setObservacoesValid(true);
+            } else {
+              setObservacoesValid(false);
+            }
+          }}
+          style={[
+            styles.input_obs, 
+           observacoesValid ? styles.inputValid : styles.inputInvalid
+          ]}
+          
         />
 
         <TouchableOpacity title="Cadastrar" onPress={cadastrarCliente} style={styles.button_submit}>
@@ -258,15 +318,20 @@ const styles = StyleSheet.create({
     paddingStart: '1%',
   },
   button:{
-    marginBottom: 24,
-    marginRight: "90%",
+    marginTop: 10,
+    marginBottom: 34,
+    alignItems: "center",
+    position: 'absolute',
+    left: 16,
   },
   iconimage:{
     width: 35,
     height: 35,
   },
   message:{
-    fontSize: 28,
+    fontSize: 26,
+    marginTop: 35,
+    marginBottom: 25,
     fontWeight: 'bold',
     color: '#fff',
     alignSelf: "center",
@@ -294,6 +359,12 @@ const styles = StyleSheet.create({
     height: 80,
     marginBottom: 12,
     fontSize: 16,
+  },
+  inputValid: {
+    borderColor: 'green', // Estilo para o campo válido
+  },
+  inputInvalid: {
+    borderColor: 'red', // Estilo para o campo inválido
   },
   button_submit:{
     backgroundColor: '#38a69d',
