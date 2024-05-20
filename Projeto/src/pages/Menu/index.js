@@ -15,6 +15,7 @@ export default function Menu(){
 
             <Animatable.View animation="fadeInUp" style={styles.containerForm}>
             <Text style={styles.buttonTextAbove}>Área Do Cliente</Text>
+
             <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Cclient')}>
                 <Image style={styles.iconimage}
                     animation="flipInY"
@@ -33,13 +34,14 @@ export default function Menu(){
             </TouchableOpacity>
 
             <Text style={styles.buttonTextAbove}>Àrea Do Funcionário</Text>
-            <TouchableOpacity style={styles.button}>
+
+            <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Cfunctionary')}>
                 <Image style={styles.iconimage}
                     animation="flipInY"
                     source={require('../../assets/adicionar-usuario.png')}
                     resizeMode="stretch"
                 />
-                <Text styles={styles.buttonText}>Cadastre De Funcionário</Text>
+                <Text styles={styles.buttonText}>Cadastro De Funcionário</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button}>
                 <Image style={styles.iconimage}

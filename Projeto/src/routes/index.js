@@ -6,6 +6,7 @@ import Menu from  '../pages/Menu';
 import Cclient from '../pages/Cclient'
 import Gclient from '../pages/Gclient'
 import Aclient from '../pages/Aclient'
+import Cfunctionary from '../pages/Cfunctionary'
 
 const Stack = createNativeStackNavigator();
 
@@ -19,11 +20,11 @@ export default function Routes(){
         <Stack.Navigator>
         
         
-        {/* Gclient em teste */}
-        <Stack.Screen
-            name="Gclient"
-            component={Gclient}
-            options={{ headerShown: false }}
+        {/* Menu em teste */}
+        <Stack.Screen 
+            name="Menu"
+            component={Menu}
+            options={{ headerShown: false}}
         />
 
         
@@ -40,11 +41,7 @@ export default function Routes(){
             options={{ headerShown: false}}
         />
         
-        <Stack.Screen 
-            name="Menu"
-            component={Menu}
-            options={{ headerShown: false}}
-        />
+        
         
         <Stack.Screen
             name="Cclient"
@@ -52,7 +49,11 @@ export default function Routes(){
             options={{ headerShown: false }}
         />
 
-
+        <Stack.Screen
+            name="Gclient"
+            component={Gclient}
+            options={{ headerShown: false }}
+        />
 
         <Stack.Screen
             name="Aclient"
@@ -60,6 +61,11 @@ export default function Routes(){
             options={{ headerShown: false }}
         />
         
+        <Stack.Screen
+            name="Cfunctionary"
+            component={Cfunctionary}
+            options={{ headerShown: false }}
+        />
        
         </Stack.Navigator>
     )
