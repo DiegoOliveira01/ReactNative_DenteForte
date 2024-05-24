@@ -1,3 +1,4 @@
+import { ScrollView } from 'react-native';
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
@@ -13,6 +14,7 @@ export default function Menu(){
                 <Text style={styles.message}>Escolha Uma Opção</Text>
             </Animatable.View>
 
+            <ScrollView contentContainerStyle={{ paddingHorizontal: 20}}>
             <Animatable.View animation="fadeInUp" style={styles.containerForm}>
             <Text style={styles.buttonTextAbove}>Área Do Cliente</Text>
 
@@ -51,6 +53,26 @@ export default function Menu(){
                 />
                 <Text styles={styles.buttonText}>Gerenciamento De Funcionário</Text>
             </TouchableOpacity>
+            
+            <Text style={styles.buttonTextAbove}>Àrea De Agendamento</Text>
+
+            <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Cconsultation')}>
+                <Image style={styles.iconimage}
+                    animation="flipInY"
+                    source={require('../../assets/calendario_adicionar.png')}
+                    resizeMode="stretch"
+                />
+                <Text styles={styles.buttonText}>Agendar Consulta</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Gfunctionary')}>
+                <Image style={styles.iconimage}
+                    animation="flipInY"
+                    source={require('../../assets/calendario_gerenciar.png')}
+                    resizeMode="stretch"
+                />
+                <Text styles={styles.buttonText}>Gerenciar Consulta</Text>
+            </TouchableOpacity>
+            
             <TouchableOpacity style={styles.button_deslogar} onPress={ () => navigation.navigate('Welcome')}>
                 <Image style={styles.iconimage}
                     animation="flipInY"
@@ -59,8 +81,9 @@ export default function Menu(){
                 />
                 <Text styles={styles.buttonText}>Deslogar</Text>
             </TouchableOpacity>
+
             </Animatable.View>
-            
+            </ScrollView>
             
             
         </View>

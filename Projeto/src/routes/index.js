@@ -9,6 +9,7 @@ import Aclient from '../pages/Aclient'
 import Cfunctionary from '../pages/Cfunctionary'
 import Gfunctionary from '../pages/Gfunctionary'
 import Afunctionary from '../pages/Afunctionary'
+import Cconsultation from '../pages/Cconsultation'
 
 const Stack = createNativeStackNavigator();
 
@@ -78,6 +79,12 @@ export default function Routes(){
         <Stack.Screen
             name="Afunctionary"
             component={Afunctionary}
+            options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+            name="Cconsultation"
+            component={Cconsultation}
             options={{ headerShown: false }}
         />
        

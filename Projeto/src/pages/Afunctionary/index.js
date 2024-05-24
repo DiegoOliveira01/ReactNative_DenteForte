@@ -181,7 +181,7 @@ const EditarFuncionarioScreen = () => {
 
       <ScrollView contentContainerStyle={{ paddingHorizontal: 20}}>
       <Animatable.View animation="fadeInUp" style={styles.containerForm}>
-        
+     
       <Text style={styles.title}>Nome:</Text>
         <TextInput 
           placeholder="Digite o nome do funcionário..." 
