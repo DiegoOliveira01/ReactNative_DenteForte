@@ -11,10 +11,10 @@ const App = () => {
   const [selectedHorario, setSelectedHorario] = useState('');
 
   const horarios = [
-    { label: 'H8:00', value: '08:00:00' },
-    { label: 'H9:00', value: '09:00:00' },
-    { label: 'H10:00', value: '10:00:00' },
-    { label: 'H11:00', value: '11:00:00' }
+    { label: 'H8:00', value: 'H8:00' },
+    { label: 'H9:00', value: 'H9:00' },
+    { label: 'H10:00', value: 'H10:00' },
+    { label: 'H11:00', value: 'H11:00' }
   ];
 
   useEffect(() => {
@@ -38,21 +38,20 @@ const App = () => {
       Alert.alert('Erro', 'Todos os campos são obrigatórios!');
       return;
     }
-
+  
     const dataConsulta = `2024-05-21 ${selectedHorario}`; // Ajuste a data conforme necessário
-
-    const formData = new FormData();
-    formData.append('idcliente', selectedCliente);
-    formData.append('idfuncionario', selectedFuncionario);
-    formData.append('data_consulta', dataConsulta);
-
-    console.log("Enviando dados:", {
+  
+    const data = {
       idcliente: selectedCliente,
       idfuncionario: selectedFuncionario,
       data_consulta: dataConsulta
-    });
-
-    axios.post('http://192.168.1.110/api.php?action=marcarConsulta', formData)
+    };
+  
+    axios.post('http://192.168.1.110/api.php?action=marcarConsulta', JSON.stringify(data), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
     .then(response => Alert.alert('Sucesso', response.data.message))
     .catch(error => {
       console.error(error);

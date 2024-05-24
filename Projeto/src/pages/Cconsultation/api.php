@@ -37,16 +37,15 @@ if ($action == 'getClientes') {
 } elseif ($action == 'marcarConsulta') {
     // Debug: imprimir dados recebidos
     $data = json_decode(file_get_contents("php://input"), true);
-    error_log(print_r($data, true));
-
-    $idcliente = isset($_POST['idcliente']) ? $_POST['idcliente'] : null;
-    $idfuncionario = isset($_POST['idfuncionario']) ? $_POST['idfuncionario'] : null;
-    $data_consulta = isset($_POST['data_consulta']) ? $_POST['data_consulta'] : null;
-
-    if (!$idcliente || !$idfuncionario || !$data_consulta) {
+    
+    if (!$data) {
         echo json_encode(["message" => "Erro: Todos os campos são obrigatórios."]);
         exit();
-    }
+      }
+    
+      $idcliente = $data['idcliente'];
+      $idfuncionario = $data['idfuncionario'];
+      $data_consulta = $data['data_consulta'];
 
     // Obter dados do cliente
     $clienteResult = $conn->query("SELECT nome, email, cpf FROM cliente WHERE idcliente = $idcliente");
