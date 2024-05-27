@@ -46,6 +46,7 @@ if ($action == 'getClientes') {
       $idcliente = $data['idcliente'];
       $idfuncionario = $data['idfuncionario'];
       $data_consulta = $data['data_consulta'];
+      $horario_consulta = $data['horario_consulta'];
 
     // Obter dados do cliente
     $clienteResult = $conn->query("SELECT nome, email, cpf FROM cliente WHERE idcliente = $idcliente");
@@ -74,8 +75,8 @@ if ($action == 'getClientes') {
     $cpf_funcionario = $funcionario['cpf'];
 
     // Inserir dados na tabela de consulta
-    $stmt = $conn->prepare("INSERT INTO consulta (idcliente, nome_cliente, email_cliente, cpf_cliente, idfuncionario, nome_funcionario, email_funcionario, cpf_funcionario, data_consulta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("isssissss", $idcliente, $nome_cliente, $email_cliente, $cpf_cliente, $idfuncionario, $nome_funcionario, $email_funcionario, $cpf_funcionario, $data_consulta);
+    $stmt = $conn->prepare("INSERT INTO consulta (idcliente, nome_cliente, email_cliente, cpf_cliente, idfuncionario, nome_funcionario, email_funcionario, cpf_funcionario, data_consulta, horario_consulta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("isssisssss", $idcliente, $nome_cliente, $email_cliente, $cpf_cliente, $idfuncionario, $nome_funcionario, $email_funcionario, $cpf_funcionario, $data_consulta, $horario_consulta);
     if ($stmt->execute()) {
         echo json_encode(["message" => "Consulta marcada com sucesso!"]);
     } else {

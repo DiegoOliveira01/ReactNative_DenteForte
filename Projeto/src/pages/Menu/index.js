@@ -64,7 +64,7 @@ export default function Menu(){
                 />
                 <Text styles={styles.buttonText}>Agendar Consulta</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Gfunctionary')}>
+            <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Gconsultation')}>
                 <Image style={styles.iconimage}
                     animation="flipInY"
                     source={require('../../assets/calendario_gerenciar.png')}

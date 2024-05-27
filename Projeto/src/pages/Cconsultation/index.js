@@ -4,7 +4,7 @@ import axios from 'axios';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-const App = () => {
+const CadastrarConsultaScreen = () => {
   const [clientes, setClientes] = useState([]);
   const [funcionarios, setFuncionarios] = useState([]);
   const [selectedCliente, setSelectedCliente] = useState('');
@@ -21,14 +21,14 @@ const App = () => {
   ];
 
   useEffect(() => {
-    axios.get('http://192.168.1.110/api.php?action=getClientes')
+    axios.get('http://192.168.1.110/api_cconsulta.php?action=getClientes')
       .then(response => setClientes(response.data.map(cliente => ({
         label: cliente.nome,
         value: cliente.idcliente
       }))))
       .catch(error => console.error(error));
     
-    axios.get('http://192.168.1.110/api.php?action=getFuncionarios')
+    axios.get('http://192.168.1.110/api_cconsulta.php?action=getFuncionarios')
       .then(response => setFuncionarios(response.data.map(funcionario => ({
         label: funcionario.nome,
         value: funcionario.idfuncionario
@@ -42,16 +42,16 @@ const App = () => {
       return;
     }
   
-    const formattedDate = selectedDate.toISOString().split('T')[0];
-    const dataConsulta = `${formattedDate} ${selectedHorario}`;
+    const formattedDate = `${selectedDate.getDate().toString().padStart(2, '0')}/${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}/${selectedDate.getFullYear()}`;
   
     const data = {
       idcliente: selectedCliente,
       idfuncionario: selectedFuncionario,
-      data_consulta: dataConsulta
+      data_consulta: formattedDate,
+      horario_consulta: selectedHorario
     };
   
-    axios.post('http://192.168.1.110/api.php?action=marcarConsulta', JSON.stringify(data), {
+    axios.post('http://192.168.1.110/api_cconsulta.php?action=marcarConsulta', JSON.stringify(data), {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -141,4 +141,4 @@ const pickerSelectStyles = StyleSheet.create({
   },
 });
 
-export default App;
+export default CadastrarConsultaScreen;
