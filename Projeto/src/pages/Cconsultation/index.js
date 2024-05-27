@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, Alert, StyleSheet } from 'react-native';
 import axios from 'axios';
 import RNPickerSelect from 'react-native-picker-select';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const App = () => {
   const [clientes, setClientes] = useState([]);
@@ -9,6 +10,8 @@ const App = () => {
   const [selectedCliente, setSelectedCliente] = useState('');
   const [selectedFuncionario, setSelectedFuncionario] = useState('');
   const [selectedHorario, setSelectedHorario] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const horarios = [
     { label: 'H8:00', value: 'H8:00' },
@@ -39,7 +42,8 @@ const App = () => {
       return;
     }
   
-    const dataConsulta = `2024-05-21 ${selectedHorario}`; // Ajuste a data conforme necessário
+    const formattedDate = selectedDate.toISOString().split('T')[0];
+    const dataConsulta = `${formattedDate} ${selectedHorario}`;
   
     const data = {
       idcliente: selectedCliente,
@@ -52,7 +56,7 @@ const App = () => {
         'Content-Type': 'application/json'
       }
     })
-    .then(response => Alert.alert('Sucesso', response.data.message))
+    .then(response => Alert.alert('Aviso', response.data.message))
     .catch(error => {
       console.error(error);
       Alert.alert('Erro', 'Não foi possível marcar a consulta.');
@@ -84,6 +88,22 @@ const App = () => {
         items={horarios}
         style={pickerSelectStyles}
       />
+
+      <Text>Selecione a Data:</Text>
+      <Button title="Selecionar Data" onPress={() => setShowDatePicker(true)} />
+      {showDatePicker && (
+        <DateTimePicker
+          value={selectedDate}
+          mode="date"
+          display="default"
+          onChange={(event, date) => {
+            setShowDatePicker(false);
+            if (date) {
+              setSelectedDate(date);
+            }
+          }}
+        />
+      )}
 
       <Button title="Marcar Consulta" onPress={marcarConsulta} />
     </View>
