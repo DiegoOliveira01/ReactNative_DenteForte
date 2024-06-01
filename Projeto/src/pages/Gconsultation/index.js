@@ -23,7 +23,7 @@ const ListaConsultasScreen = () => {
   }, []);
 
   const handleEdit = (idconsulta) => {
-    navigation.navigate('EditConsulta', { idconsulta });
+    navigation.navigate('Aconsultation', { idconsulta });
   };
 
   const deleteConsulta = async (id) => {

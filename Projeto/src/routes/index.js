@@ -11,6 +11,7 @@ import Gfunctionary from '../pages/Gfunctionary'
 import Afunctionary from '../pages/Afunctionary'
 import Cconsultation from '../pages/Cconsultation'
 import Gconsultation from '../pages/Gconsultation'
+import Aconsultation from '../pages/Aconsultation'
 
 const Stack = createNativeStackNavigator();
 
@@ -92,6 +93,12 @@ export default function Routes(){
         <Stack.Screen
             name="Gconsultation"
             component={Gconsultation}
+            options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+            name="Aconsultation"
+            component={Aconsultation}
             options={{ headerShown: false }}
         />
        
