@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import RNPickerSelect from 'react-native-picker-select';
 
 const Aconsultation = () => {
   const [consulta, setConsulta] = useState({
@@ -50,6 +51,13 @@ const Aconsultation = () => {
     }
   };
 
+  const horarios = [
+    { label: 'H8:00', value: 'H8:00' },
+    { label: 'H9:00', value: 'H9:00' },
+    { label: 'H10:00', value: 'H10:00' },
+    { label: 'H11:00', value: 'H11:00' }
+  ];
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Editar Consulta</Text>
@@ -63,11 +71,12 @@ const Aconsultation = () => {
         value={consulta.data_consulta}
         onChangeText={(text) => handleInputChange('data_consulta', text)}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Horário da Consulta"
+      <RNPickerSelect
+        onValueChange={(value) => handleInputChange('horario_consulta', value)}
+        items={horarios}
+        placeholder={{ label: 'Selecione um horário', value: null }}
+        style={pickerSelectStyles}
         value={consulta.horario_consulta}
-        onChangeText={(text) => handleInputChange('horario_consulta', text)}
       />
       <TouchableOpacity style={styles.button} onPress={handleUpdate}>
         <Text style={styles.buttonText}>Atualizar</Text>
@@ -116,6 +125,27 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 18,
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    height: 40,
+    borderColor: '#38a69d',
+    borderWidth: 2,
+    borderRadius: 5,
+    padding: 8,
+    marginBottom: 16,
+    backgroundColor: '#fff',
+  },
+  inputAndroid: {
+    height: 40,
+    borderColor: '#38a69d',
+    borderWidth: 2,
+    borderRadius: 5,
+    padding: 8,
+    marginBottom: 16,
+    backgroundColor: '#fff',
   },
 });
 
